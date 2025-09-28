@@ -1,225 +1,272 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Virtual Classroom</title>
-  <style>
-    /* ===============================
-       THEME VARIABLES
-    =============================== */
-    :root {
-      --primary-color: #4f46e5; /* Indigo */
-      --primary-hover: #4338ca;
-      --secondary-color: #64748b; /* Grayish */
-      --success-color: #22c55e; /* Green */
-      --teacher-color: #0ea5e9; /* Cyan */
-      --teacher-hover: #0284c7;
-      --background-color: #f9fafb; /* Light */
-      --surface-color: #ffffff;
-      --text-color: #1e293b;
-      --border-color: #e2e8f0;
-      --card-shadow: 0 4px 8px rgba(0,0,0,0.05);
-      --live-bg-peach: #fff7ed;
-      --live-bg-blue: #e0f2fe;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Virtual Classroom</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* --- 1. General Styles & CSS Variables --- */
+        
+        :root {
+            --primary-color: #4f46e5;
+            --primary-hover: #4338ca;
+            --secondary-color: #64748b;
+            --teacher-primary-color: #0ea5e9;
+            --teacher-primary-hover: #0284c7;
+            --background-color: #f8fafc;
+            --surface-color: #ffffff;
+            --surface-accent: #f1f5f9;
+            --surface-alt: #fffbeb;
+            --surface-green: #f0fdf4;
+            --text-color: #0f172a;
+            --text-secondary: #64748b;
+            --border-color: #e2e8f0;
+            --success-color: #22c55e;
+            --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            --card-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --card-hover-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        }
 
-    body.dark {
-      --primary-color: #6366f1;
-      --primary-hover: #4f46e5;
-      --secondary-color: #94a3b8;
-      --success-color: #22c55e;
-      --teacher-color: #38bdf8;
-      --teacher-hover: #0ea5e9;
-      --background-color: #0f172a;
-      --surface-color: #1e293b;
-      --text-color: #f1f5f9;
-      --border-color: #334155;
-      --card-shadow: 0 4px 12px rgba(0,0,0,0.15);
-      --live-bg-peach: #4a3a13;
-      --live-bg-blue: #1e293b;
-    }
+        body.dark-mode {
+            --primary-color: #818cf8;
+            --primary-hover: #6366f1;
+            --secondary-color: #94a3b8;
+            --teacher-primary-color: #38bdf8;
+            --teacher-primary-hover: #0ea5e9;
+            --background-color: #0f172a;
+            --surface-color: #1e293b;
+            --surface-accent: #334155;
+            --surface-alt: #453315;
+            --surface-green: #14532d;
+            --text-color: #e2e8f0;
+            --text-secondary: #94a3b8;
+            --border-color: #334155;
+            --success-color: #4ade80;
+        }
 
-    /* ===============================
-       GLOBAL RESET & BASE
-    =============================== */
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      font-family: 'Segoe UI', Roboto, Arial, sans-serif;
-      background: var(--background-color);
-      color: var(--text-color);
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      transition: background 0.3s, color 0.3s;
-    }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
 
-    .container { width: 100%; max-width: 1200px; padding: 1rem; }
-    .page { display: none; width: 100%; }
-    .page.active { display: block; }
+        body {
+            font-family: var(--font-family);
+            background-color: var(--background-color);
+            color: var(--text-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            transition: background-color 0.3s, color 0.3s;
+        }
 
-    /* ===============================
-       COMPONENTS
-    =============================== */
-    .card { background: var(--surface-color); border-radius: 16px; padding: 1.5rem; margin-bottom: 1rem; box-shadow: var(--card-shadow); transition: background 0.3s; }
-    .btn { display: inline-block; padding: 0.75rem 1.5rem; border: none; border-radius: 8px; font-size: 1rem; font-weight: 600; cursor: pointer; text-align: center; transition: background 0.2s, transform 0.1s; }
-    .btn:hover { transform: translateY(-2px); }
-    .btn-primary { background: var(--primary-color); color: white; }
-    .btn-primary:hover { background: var(--primary-hover); }
-    .btn-success { background: var(--success-color); color: white; }
-    .btn-info { background: var(--teacher-color); color: white; }
-    .btn-info:hover { background: var(--teacher-hover); }
-    .btn-secondary { background: var(--secondary-color); color: white; }
-    h1, h2, h3, h4 { margin-bottom: 1rem; }
+        .container { width: 100%; max-width: 1280px; padding: 1.5rem; }
+        .page { display: none; width: 100%; }
+        .page.active { display: block; }
 
-    /* ===============================
-       HEADER (Dashboard & Course Detail)
-    =============================== */
-    .dashboard-header { display: flex; justify-content: space-between; align-items: center; padding: 1rem 1.5rem; background: var(--surface-color); border-bottom: 1px solid var(--border-color); border-radius: 0 0 16px 16px; margin-bottom: 1rem; }
-    .dashboard-header .logo { font-size: 1.5rem; font-weight: bold; color: var(--primary-color); }
-    .dashboard-header .user-info { display: flex; align-items: center; gap: 0.75rem; }
-    .dashboard-header .user-info a { text-decoration: none; color: var(--primary-color); font-weight: 500; }
-    .dashboard-header .user-info .theme-toggle-btn, .dashboard-header .user-info .logout-btn { display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem 0.8rem; background-color: var(--background-color); border-radius: 8px; cursor: pointer; font-size: 0.9rem; line-height: 1; text-decoration: none; border: 1px solid transparent; transition: all 0.2s; white-space: nowrap; }
-    .dashboard-header .user-info .theme-toggle-btn:hover, .dashboard-header .user-info .logout-btn:hover { border-color: var(--primary-color); background-color: var(--surface-color); }
-    .dashboard-header .user-info strong { color: var(--primary-color); }
+        .card {
+            background-color: var(--surface-color);
+            border-radius: 12px;
+            box-shadow: var(--card-shadow);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border: 1px solid var(--border-color);
+            transition: background-color 0.3s, border-color 0.3s, box-shadow 0.2s;
+        }
 
-    /* ===============================
-       LOGIN PAGE
-    =============================== */
-    #login-page .login-box { max-width: 400px; margin: 2rem auto; text-align: center; padding: 2rem; }
-    #login-page .tabs { display: flex; margin-bottom: 1rem; background: var(--background-color); border-radius: 12px; overflow: hidden; }
-    #login-page .tab { flex: 1; padding: 0.75rem; cursor: pointer; font-weight: 600; }
-    #login-page .tab.active { background: var(--primary-color); color: white; }
-    #login-page input { width: 100%; padding: 0.75rem; margin: 0.5rem 0; border-radius: 8px; border: 1px solid var(--border-color); background-color: var(--surface-color); color: var(--text-color); }
-    #login-page .theme-toggle-btn { margin-top: 1rem; font-size: 0.85rem; cursor: pointer; color: var(--secondary-color); }
+        .btn {
+            display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
+            padding: 0.75rem 1.5rem; border: none; border-radius: 8px; font-size: 1rem;
+            font-weight: 600; cursor: pointer; text-align: center; text-decoration: none; transition: all 0.2s;
+        }
+        .btn:hover { transform: translateY(-2px); box-shadow: var(--card-hover-shadow); }
+        .btn-primary { background-color: var(--primary-color); color: #fff; }
+        .btn-primary:hover { background-color: var(--primary-hover); }
+        .btn-info { background-color: var(--teacher-primary-color); color: #fff; }
+        .btn-info:hover { background-color: var(--teacher-primary-hover); }
+        .btn-success { background-color: var(--success-color); color: #fff; }
+        .btn-secondary { background-color: var(--surface-accent); color: var(--text-color); border: 1px solid var(--border-color); }
+        .btn-secondary:hover { background-color: var(--border-color); }
+        .btn-icon { background: transparent; border: none; cursor: pointer; border-radius: 8px; color: var(--text-secondary); padding: 0.5rem; }
+        .btn-icon:hover { background-color: var(--surface-accent); color: var(--text-color); }
+        .btn-icon svg { width: 24px; height: 24px; }
+        
+        h1, h2, h3 { margin-bottom: 1rem; font-weight: 600; }
+        h1 { font-size: 2.2rem; } h2 { font-size: 1.8rem; } h3 { font-size: 1.25rem; }
 
-    /* ===============================
-       DASHBOARD GENERAL
-    =============================== */
-    .dashboard { display: flex; width: 100%; height: 100vh; }
-    .sidebar { width: 220px; background: var(--surface-color); padding: 1rem; border-right: 1px solid var(--border-color); display: flex; flex-direction: column; gap: 1rem; flex-shrink: 0; }
-    .sidebar h3 { font-size: 1.1rem; margin-bottom: 0.5rem; }
-    .sidebar a { padding: 0.5rem; border-radius: 8px; cursor: pointer; display: block; color: var(--text-color); text-decoration: none; }
-    .sidebar a:hover { background: var(--primary-color); color: white; }
-    .main { flex-grow: 1; padding: 2rem; overflow-y: auto; }
-    .courses-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 1rem; }
-    .course-card { cursor: pointer; transition: transform 0.2s; }
-    .course-card:hover { transform: translateY(-4px); }
+        .form-group { margin-bottom: 1.25rem; text-align: left; }
+        .form-group label { display: block; font-weight: 500; margin-bottom: 0.5rem; }
+        input, textarea, select {
+            width: 100%; padding: 0.75rem; border: 1px solid var(--border-color); border-radius: 8px;
+            font-size: 1rem; background-color: var(--surface-color); color: var(--text-color); font-family: var(--font-family);
+        }
+        input:focus, textarea:focus, select:focus { outline: 2px solid var(--primary-color); border-color: transparent; }
 
-    /* ===============================
-       LIVE CLASS PAGE STYLES
-    =============================== */
-    #live-class-page { background: linear-gradient(135deg, #e0f2fe, #fdf2f8); }
-    body.dark #live-class-page { background: linear-gradient(135deg, #0f172a, #1e1b4b); }
-    #live-class-page .dashboard-header { background: transparent; border-bottom: none; margin-bottom: 0; }
-    #live-class-page .main { padding: 1rem; }
-    #live-class-page .classroom-layout { display: flex; gap: 1rem; height: calc(100vh - 90px); }
-    #live-class-page .main-pane { flex-grow: 1; background-color: #000; color: white; display: flex; justify-content: center; align-items: center; flex-direction: column; border-radius: 8px; position: relative; transition: opacity 0.3s; }
-    #live-class-page .bandwidth-controls { position: absolute; top: 1rem; right: 1rem; z-index: 10; }
-    #live-class-page .bandwidth-controls select { padding: 0.5rem; border-radius: 6px; border: 1px solid #444; background: #222; color: white;}
-    #live-class-page .live-sidebar { width: 300px; flex-shrink: 0; display: flex; flex-direction: column; gap: 1rem; }
-    #live-class-page .chat-window { background-color: var(--live-bg-peach); }
-    #live-class-page .participants-window { background-color: var(--live-bg-blue); }
-    #live-class-page .participants-window p { margin-bottom: 0.5rem; }
-    #live-class-page .card { border-radius: 8px; }
-    #live-class-page .chat-window .messages { height: 150px; overflow-y: auto; border: 1px solid var(--border-color); padding: 0.5rem; margin-bottom: 0.5rem; border-radius: 8px; background: var(--surface-color); }
-    #live-class-page .chat-window input { width: 100%; padding: 0.5rem; border-radius: 8px; border: 1px solid var(--border-color); background: var(--surface-color); color: var(--text-color); }
+        /* --- Landing & Login Pages --- */
+        .auth-container { max-width: 480px; margin: 4rem auto; text-align: center; }
+        .auth-container h1 { display: flex; align-items: center; justify-content: center; gap: 0.75rem;}
+        .auth-container p { color: var(--text-secondary); margin-bottom: 2rem; }
+        .role-selection { display: flex; justify-content: center; gap: 1rem; }
+        .language-selection { margin-top: 2rem; font-size: 0.9rem; }
+        .language-selection a { color: var(--text-secondary); text-decoration: none; padding: 0.25rem 0.5rem; cursor: pointer; border-radius: 6px; }
+        .language-selection a.lang-active { color: var(--primary-color); font-weight: 600; background-color: var(--surface-accent); }
+        
+        /* --- Header & Dashboard --- */
+        .header { display: flex; justify-content: space-between; align-items: center; padding: 1rem 1.5rem; background-color: var(--surface-color); border-bottom: 1px solid var(--border-color); margin-bottom: 1.5rem; }
+        .header .logo { font-size: 1.5rem; font-weight: bold; color: var(--primary-color); }
+        .header .user-info { display: flex; align-items: center; gap: 1rem; }
+        .dashboard-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem; }
+        .course-card { cursor: pointer; }
+        .course-card:hover { transform: translateY(-5px); box-shadow: var(--card-hover-shadow); }
+        
+        /* --- Course Page --- */
+        .breadcrumb { margin-bottom: 1.5rem; font-size: 0.9rem; color: var(--text-secondary); }
+        .breadcrumb a { color: var(--primary-color); text-decoration: none; cursor: pointer; }
+        .tabs { display: flex; border-bottom: 1px solid var(--border-color); margin-bottom: 1.5rem; }
+        .tab-button { padding: 0.75rem 1.5rem; cursor: pointer; border: none; background: none; font-size: 1rem; border-bottom: 3px solid transparent; color: var(--text-secondary); font-weight: 500; }
+        .tab-button.active { border-bottom-color: var(--primary-color); color: var(--primary-color); font-weight: 600; }
+        .tab-content { display: none; } .tab-content.active { display: block; }
+        .session-item { display: flex; justify-content: space-between; align-items: center; padding: 1rem; margin-bottom: 1rem; }
+        .session-item .actions { display: flex; gap: 0.5rem; }
+        
+        /* --- Live Class Page --- */
+        #live-class-page .classroom-layout { display: flex; gap: 1.5rem; height: calc(100vh - 120px); }
+        #live-class-page .main-pane { background-color: #000; color: white; display: flex; flex-direction: column; justify-content: center; align-items: center; border-radius: 12px; position: relative; padding: 1rem; flex-grow: 1; }
+        #video-content { flex-grow: 1; display: flex; align-items: center; justify-content: center; transition: opacity 0.3s ease-in-out; }
+        .live-sidebar { width: 320px; flex-shrink: 0; display: flex; flex-direction: column; gap: 1.5rem; }
+        .bandwidth-controls { position: absolute; top: 1rem; right: 1rem; z-index: 10; }
+        .bandwidth-controls select { padding: 0.5rem; border-radius: 8px; background-color: #333; color: white; border: 1px solid #555;}
+        .chat-window { background-color: var(--surface-alt); }
+        .participants-window { background-color: var(--surface-accent); }
+        .chat-window .messages { height: 150px; overflow-y: auto; background: var(--surface-color); padding: 0.75rem; border-radius: 8px; margin-bottom: 1rem; }
+        
+        /* --- Polls --- */
+        .poll-option-input { margin-bottom: 0.5rem; }
+        .poll-result-bar { background-color: var(--border-color); border-radius: 4px; overflow: hidden; margin-top: 0.25rem; }
+        .poll-result-fill { background-color: var(--primary-color); height: 20px; color: white; font-size: 0.8rem; line-height: 20px; text-align: right; padding-right: 5px; transition: width 0.5s ease; }
+        
+        /* --- Modal --- */
+        .modal-overlay { position: fixed; inset: 0; background-color: rgba(0,0,0,0.6); display: flex; justify-content: center; align-items: center; z-index: 1000; opacity: 0; visibility: hidden; transition: opacity 0.3s, visibility 0.3s; }
+        .modal-overlay.visible { opacity: 1; visibility: visible; }
+        .modal-content { width: 90%; max-width: 550px; }
+        #ai-modal-result { margin-top: 1.5rem; max-height: 300px; overflow-y: auto; background: var(--background-color); padding: 1rem; border-radius: 6px; }
 
-    /* ===============================
-       COURSE DETAIL PAGE (STUDENT & TEACHER)
-    =============================== */
-    .course-detail-page { background: linear-gradient(135deg, #e0f2fe, #fdf2f8); }
-    body.dark .course-detail-page { background: linear-gradient(135deg, #0f172a, #1e1b4b); }
-    .course-detail-page .main { padding: 1rem 2rem; }
-    .course-detail-page .breadcrumb { margin-bottom: 1.5rem; color: var(--secondary-color); font-size: 0.9rem; }
-    .course-detail-page .breadcrumb a { color: var(--secondary-color); text-decoration: none; }
-    .course-detail-page .breadcrumb a:hover { text-decoration: underline; }
-    .course-detail-page h1 { font-size: 2rem; margin-bottom: 0.5rem; }
-    .course-detail-page h2 { font-size: 1.2rem; color: var(--secondary-color); font-weight: normal; margin-bottom: 2rem; }
-    .course-detail-page .course-tabs { display: flex; border-bottom: 1px solid var(--border-color); margin-bottom: 1.5rem; }
-    .course-detail-page .course-tab { padding: 0.75rem 1.5rem; cursor: pointer; font-weight: 500; color: var(--secondary-color); border-bottom: 2px solid transparent; margin-bottom: -1px; }
-    .course-detail-page .course-tab.active { color: var(--primary-color); border-color: var(--primary-color); }
-    .course-detail-page .content-list .list-item { display: flex; justify-content: space-between; align-items: center; background: var(--surface-color); padding: 1rem 1.5rem; border-radius: 8px; margin-bottom: 0.75rem; box-shadow: var(--card-shadow); }
-    .course-detail-page .content-list .list-item h4 { margin-bottom: 0.25rem; font-size: 1.1rem; }
-    .course-detail-page .content-list .list-item p { font-size: 0.9rem; color: var(--secondary-color); }
-    .course-detail-page .content-list .list-item .btn { padding: 0.5rem 1rem; font-size: 0.9rem; }
-
-  </style>
+        @media (max-width: 900px) { #live-class-page .classroom-layout { flex-direction: column; height: auto; } .live-sidebar { width: 100%; } }
+        @media (max-width: 768px) { .role-selection { flex-direction: column; } }
+    </style>
 </head>
 <body>
-  <div id="login-page" class="page active">
-    <div class="login-box card">
-      <h1>🎓 Virtual Classroom</h1>
-      <div class="tabs">
-        <div id="student-tab" class="tab active">Student</div>
-        <div id="teacher-tab" class="tab">Teacher</div>
-      </div>
-      <form id="login-form">
-        <input type="email" id="email" placeholder="Email" required />
-        <input type="password" id="password" placeholder="Password" required />
-        <button type="submit" class="btn btn-primary" style="width:100%;">Login</button>
-      </form>
-      <div class="theme-toggle-btn"></div>
-    </div>
-  </div>
 
-  <div id="student-dashboard-page" class="page">
-    <div class="dashboard">
-      <div class="sidebar">
-        <h3>Student Menu</h3>
-        <a>🏠 Home</a>
-        <a>📚 My Courses</a>
-      </div>
-      <div class="main">
-        <div class="dashboard-header">
-          <div class="logo">🎓 Virtual Classroom</div>
-          <div class="user-info">
-            <span>Welcome, <strong id="student-name">Student</strong></span>
-            <a class="theme-toggle-btn"></a>
-            <a class="logout-btn" title="Logout">🚪 Logout</a>
-          </div>
-        </div>
-        <div class="card" id="student-up-next-card"></div>
-        <h3>My Courses</h3>
-        <div class="courses-grid" id="student-courses-grid"></div>
-      </div>
-    </div>
-  </div>
+    <svg width="0" height="0" style="display:none;">
+      <symbol id="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></symbol>
+      <symbol id="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></symbol>
+      <symbol id="icon-logout" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></symbol>
+    </svg>
 
-  <div id="teacher-dashboard-page" class="page">
-    <div class="dashboard">
-      <div class="sidebar">
-        <h3>Teacher Menu</h3>
-        <a>🏠 Home</a>
-        <a>📖 My Courses</a>
-      </div>
-      <div class="main">
-        <div class="dashboard-header">
-          <div class="logo">🎓 Virtual Classroom</div>
-          <div class="user-info">
-            <span>Welcome, <strong id="teacher-name">Teacher</strong></span>
-            <a class="theme-toggle-btn"></a>
-            <a class="logout-btn" title="Logout">🚪 Logout</a>
-          </div>
-        </div>
-        <div class="card" id="teacher-next-class-card"></div>
-        <h3>My Courses (Teaching)</h3>
-        <div class="courses-grid" id="teacher-courses-grid"></div>
-      </div>
-    </div>
-  </div>
-  
-  <div id="live-class-page" class="page">
-    <div class="dashboard">
-        <div class="main">
-             <div class="dashboard-header">
-                <div class="logo">🔴 LIVE: <span id="live-class-title"></span></div>
-                <div class="user-info">
-                    <a class="back-to-dashboard-link">Exit Session</a>
-                </div>
+    <div id="landing-page" class="page active">
+        <div class="auth-container">
+            <h1>🎓 Virtual Classroom</h1>
+            <p>High-quality, accessible education for everyone. Log in to begin.</p>
+            <div class="role-selection">
+                <button id="show-student-login" class="btn btn-primary">Student Login</button>
+                <button id="show-teacher-login" class="btn btn-info">Teacher Login</button>
             </div>
-            <div class="classroom-layout">
+            <div class="language-selection">
+                <a data-lang="en" class="lang-active">English</a> | <a data-lang="hi">हिन्दी</a>
+            </div>
+        </div>
+    </div>
+
+    <div id="login-page" class="page">
+        <div class="auth-container card">
+            <h2 id="login-role-title">Login</h2>
+            <p style="color: var(--text-secondary);">Enter your credentials to continue.</p>
+            <form id="login-form">
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" required>
+                </div>
+                <button type="submit" class="btn">Login</button>
+            </form>
+            <a id="back-to-landing" style="display:block; margin-top: 1.5rem; cursor:pointer;">&larr; Back to Role Selection</a>
+            <div class="language-selection">
+                <a data-lang="en" class="lang-active">English</a> | <a data-lang="hi">हिन्दी</a>
+            </div>
+        </div>
+    </div>
+
+    <div id="student-dashboard-page" class="page">
+        <header class="header">
+            <div class="logo">🎓 Virtual Classroom</div>
+            <div class="user-info">
+                <span>Welcome, <strong id="student-name">Student</strong></span>
+                <button class="btn-icon theme-toggle" title="Toggle Theme"></button>
+                <button class="btn-icon logout-btn" title="Logout"><svg><use href="#icon-logout"></use></svg></button>
+            </div>
+        </header>
+        <main class="container">
+            <h2>Student Dashboard</h2>
+            <div class="dashboard-grid">
+                <div class="card" id="student-up-next-card"></div>
+                <div class="card" id="ai-study-helper-card"></div>
+            </div>
+            <h3 style="margin-top:1.5rem">My Courses</h3>
+            <div class="dashboard-grid" id="student-courses-grid"></div>
+        </main>
+    </div>
+
+    <div id="teacher-dashboard-page" class="page">
+        <header class="header">
+            <div class="logo">🎓 Virtual Classroom</div>
+            <div class="user-info">
+                <span>Welcome, <strong id="teacher-name">Teacher</strong></span>
+                <button class="btn-icon theme-toggle" title="Toggle Theme"></button>
+                <button class="btn-icon logout-btn" title="Logout"><svg><use href="#icon-logout"></use></svg></button>
+            </div>
+        </header>
+        <main class="container">
+            <h2>Teacher Dashboard</h2>
+            <div class="card" id="teacher-next-class-card"></div>
+            <h3>My Courses (Teaching)</h3>
+            <div class="dashboard-grid" id="teacher-courses-grid"></div>
+        </main>
+    </div>
+    
+    <div id="course-page" class="page">
+       <header class="header">
+            <div class="logo">🎓 Virtual Classroom</div>
+            <div class="user-info">
+                <span>Welcome, <strong class="user-name-placeholder">User</strong></span>
+                <button class="btn-icon theme-toggle" title="Toggle Theme"></button>
+                <button class="btn-icon logout-btn" title="Logout"><svg><use href="#icon-logout"></use></svg></button>
+            </div>
+        </header>
+        <main class="container">
+            <div class="breadcrumb">
+                <a class="back-to-dashboard-link">Dashboard</a> &gt; <span id="course-breadcrumb-name"></span>
+            </div>
+            <h2 id="course-title"></h2>
+            <p id="course-instructor" style="color: var(--text-secondary); margin-top: -1rem; margin-bottom: 1.5rem;"></p>
+            
+            <div class="tabs"></div>
+            <div id="sessions-content" class="tab-content"></div>
+            <div id="quizzes-content" class="tab-content"></div>
+        </main>
+    </div>
+
+    <div id="live-class-page" class="page">
+       <header class="header">
+            <div class="logo">🔴 LIVE: <span id="live-class-title"></span></div>
+            <div class="user-info">
+                <a class="back-to-dashboard-link" style="cursor:pointer; color: var(--text-color);">Exit Session</a>
+            </div>
+        </header>
+        <main class="container">
+             <div class="classroom-layout">
                 <div class="main-pane">
                     <div class="bandwidth-controls">
                         <select id="bandwidth-selector">
@@ -228,12 +275,12 @@
                             <option value="audio">Audio Only</option>
                         </select>
                     </div>
-                    <div>
-                        <h3 id="live-class-topic">Instructor's Screen Share</h3>
-                        <p id="bandwidth-status" style="text-align: center; color: #ccc;">Mode: Full Experience</p>
+                    <div id="video-content">
+                        <h3>Instructor's Screen Share</h3>
                     </div>
+                    <p id="bandwidth-status" style="margin-top: 1rem;">Mode: Full Experience</p>
                 </div>
-                <div class="live-sidebar">
+                <aside class="live-sidebar">
                     <div class="card chat-window">
                         <h5>Chat</h5>
                         <div class="messages">[2:05 PM] Instructor: Welcome everyone!</div>
@@ -241,277 +288,366 @@
                     </div>
                     <div class="card participants-window">
                         <h5>Participants (3)</h5>
-                        <p>👤 Instructor</p>
-                        <p>👤 You</p>
-                        <p>👤 Jane Doe</p>
+                        <p>👤 Instructor</p><p>👤 You</p><p>👤 Jane Doe</p>
                     </div>
-                </div>
+                    <div class="card" id="teacher-poll-controls" style="display: none;">
+                        <h5>Polls</h5>
+                        <div id="poll-creation-area">
+                            <p style="color: var(--text-secondary); margin-bottom: 1rem;">Engage students with a live poll.</p>
+                            <button id="create-poll-btn" class="btn btn-secondary" style="width: 100%;">Create New Poll</button>
+                        </div>
+                        <div id="poll-management-area" style="display: none;"></div>
+                    </div>
+                </aside>
+            </div>
+        </main>
+    </div>
+
+    <div id="ai-assistant-modal" class="modal-overlay">
+        <div class="modal-content card">
+            <h3 id="ai-modal-title">AI Assistant</h3>
+            <div id="ai-modal-body"></div>
+            <div id="ai-modal-result"></div>
+            <div style="align-self: flex-end; margin-top: 1rem;">
+                <button id="close-ai-modal-btn" class="btn btn-secondary">Close</button>
             </div>
         </div>
     </div>
-  </div>
 
-  <div id="student-course-detail-page" class="page course-detail-page">
-    <div class="dashboard">
-        <div class="main">
-            <div class="dashboard-header">
-                <div class="logo">🎓 Virtual Classroom</div>
-                <div class="user-info">
-                    <span>Welcome, <strong id="student-name-course-detail">Student</strong></span>
-                    <a class="theme-toggle-btn"></a>
-                    <a class="logout-btn" title="Logout">🚪 Logout</a>
-                </div>
+    <div id="student-poll-modal" class="modal-overlay">
+        <div class="modal-content card">
+            <h3 id="poll-question-title">Live Poll</h3>
+            <div id="poll-content-wrapper">
+                <p id="poll-question-text" style="margin-bottom: 1.5rem; font-size: 1.1rem;"></p>
+                <form id="poll-vote-form">
+                    <div id="poll-options-container"></div>
+                    <p id="poll-error-message" style="color: #ef4444; margin-top: 1rem; display: none;"></p>
+                    <button type="submit" class="btn btn-primary" style="margin-top: 1rem;">Submit Vote</button>
+                </form>
             </div>
-            <div class="breadcrumb">
-                <a href="#" class="back-to-dashboard-link">Dashboard</a> > <span id="s-breadcrumb-course-title"></span>
-            </div>
-            <h1 id="s-course-detail-title"></h1>
-            <h2 id="s-course-detail-instructor"></h2>
-            <div class="course-tabs">
-                <div class="course-tab active" data-tab-for="s-sessions-content">Sessions & Materials</div>
-                <div class="course-tab" data-tab-for="s-quizzes-content">Quizzes & Assignments</div>
-            </div>
-            <div id="s-sessions-content" class="content-list"></div>
-            <div id="s-quizzes-content" class="content-list" style="display:none;">
-                <div class="card"><p>No Quizzes or Assignments yet.</p></div>
+            <div id="poll-confirmation-message" style="display: none; text-align: center;">
+                <h4>Thank you for voting!</h4>
+                <p>Your response has been recorded.</p>
             </div>
         </div>
     </div>
-  </div>
-
-  <div id="teacher-course-detail-page" class="page course-detail-page">
-    <div class="dashboard">
-        <div class="main">
-            <div class="dashboard-header">
-                <div class="logo">🎓 Virtual Classroom</div>
-                <div class="user-info">
-                    <span>Welcome, <strong id="teacher-name-course-detail">Teacher</strong></span>
-                    <a class="theme-toggle-btn"></a>
-                    <a class="logout-btn" title="Logout">🚪 Logout</a>
-                </div>
-            </div>
-            <div class="breadcrumb">
-                <a href="#" class="back-to-dashboard-link">Dashboard</a> > <span id="t-breadcrumb-course-title"></span>
-            </div>
-            <h1 id="t-course-detail-title"></h1>
-            <div class="course-tabs">
-                <div class="course-tab active" data-tab-for="t-sessions-content">Manage Sessions</div>
-                <div class="course-tab" data-tab-for="t-students-content">Enrolled Students</div>
-            </div>
-            <div id="t-sessions-content" class="content-list"></div>
-            <div id="t-students-content" class="content-list" style="display:none;"></div>
-        </div>
-    </div>
-  </div>
-
-  <script>
-    // ===============================
-    // STATE
-    // ===============================
-    let currentRole = "student"; 
-
-    const student = { name: "Priya Sharma" };
-    const studentCourses = [
-      { id: 101, title: "Intro to Web Dev", instructor: "Mr. Raj Singh", sessions: [
-        { id: 's101_1', title: "Class 1: HTML Basics", date: "9/29/2025", time: "2:00 PM", topic: "HTML Fundamentals" },
-        { id: 's101_2', title: "Class 2: CSS Fundamentals", date: "10/1/2025", time: "2:00 PM", topic: "CSS Fundamentals" },
-      ]},
-      { id: 102, title: "Data Structures in Python", instructor: "Dr. Anjali Verma", sessions: [
-        { id: 's102_1', title: "Lecture 1: Arrays", date: "10/5/2025", time: "10:00 AM", topic: "Introduction to Arrays" },
-      ]}
-    ];
-    const teacher = { name: "Mr. Raj Singh" };
-    const teacherCourses = [
-      { id: 101, title: "Intro to Web Dev", students: 35, sessions: [
-        { id: 's101_1', title: "Class 1: HTML Basics", date: "9/29/2025", time: "2:00 PM", topic: "HTML Fundamentals" },
-        { id: 's101_2', title: "Class 2: CSS Fundamentals", date: "10/1/2025", time: "2:00 PM", topic: "CSS Fundamentals" },
-      ], enrolledStudents: [{id: 'std1', name: 'Priya Sharma'}, {id: 'std2', name: 'Rohan Verma'}, {id: 'std3', name: 'Alisha Chen'}] },
-      { id: 201, title: "Advanced CSS", students: 20, sessions: [
-        { id: 's201_1', title: "Deep Dive into Flexbox", date: "10/6/2025", time: "4:00 PM", topic: "Flexbox Mastery" }
-      ], enrolledStudents: [{id: 'std4', name: 'Sonia Gupta'}, {id: 'std5', name: 'David Lee'}] }
-    ];
-
-    // ===============================
-    // PAGE MANAGEMENT
-    // ===============================
-    const pages = document.querySelectorAll(".page");
-    function showPage(id) {
-      pages.forEach(p => p.classList.toggle("active", p.id === id));
-    }
-
-    // ===============================
-    // LOGIN & NAVIGATION
-    // ===============================
-    document.getElementById("student-tab").addEventListener("click", () => { currentRole = "student"; document.getElementById("student-tab").classList.add("active"); document.getElementById("teacher-tab").classList.remove("active"); });
-    document.getElementById("teacher-tab").addEventListener("click", () => { currentRole = "teacher"; document.getElementById("teacher-tab").classList.add("active"); document.getElementById("student-tab").classList.remove("active"); });
-
-    document.getElementById("login-form").addEventListener("submit", e => {
-      e.preventDefault();
-      if (currentRole === "student") { renderStudentDashboard(); showPage("student-dashboard-page"); } 
-      else { renderTeacherDashboard(); showPage("teacher-dashboard-page"); }
-    });
-
-    document.querySelectorAll(".logout-btn").forEach(btn => btn.addEventListener("click", () => showPage("login-page")));
-    document.querySelectorAll(".back-to-dashboard-link").forEach(btn => {
-        btn.addEventListener('click', (e) => { e.preventDefault(); showPage(currentRole === 'student' ? 'student-dashboard-page' : 'teacher-dashboard-page'); });
-    });
-
-    // ===============================
-    // RENDER FUNCTIONS
-    // ===============================
-    function renderStudentDashboard() {
-      document.getElementById("student-name").textContent = student.name;
-      document.getElementById("student-name-course-detail").textContent = student.name; 
-
-      const upNextCard = document.getElementById("student-up-next-card");
-      const nextClassInfo = studentCourses[0].sessions[1]; 
-      
-      upNextCard.innerHTML = `<h3>Up Next: Live Class</h3><p><strong>${studentCourses[0].title}</strong>: ${nextClassInfo.title}</p><p>Time: ${nextClassInfo.date}, ${nextClassInfo.time}</p><button class="btn btn-success" style="margin-top:1rem;">Join Now</button>`;
-      upNextCard.querySelector('button').addEventListener('click', () => renderLiveClassPage(studentCourses[0], nextClassInfo));
-
-      const coursesGrid = document.getElementById("student-courses-grid");
-      coursesGrid.innerHTML = "";
-      studentCourses.forEach(c => {
-        const courseCard = document.createElement('div');
-        courseCard.className = 'card course-card';
-        courseCard.innerHTML = `<h4>${c.title}</h4><p style="color:var(--secondary-color);">${c.instructor}</p>`;
-        courseCard.addEventListener('click', () => renderStudentCourseDetailPage(c));
-        coursesGrid.appendChild(courseCard);
-      });
-    }
-
-    function renderTeacherDashboard() {
-      document.getElementById("teacher-name").textContent = teacher.name;
-      document.getElementById("teacher-name-course-detail").textContent = teacher.name;
-
-      const nextClassCard = document.getElementById("teacher-next-class-card");
-      const nextClassInfo = teacherCourses[1].sessions[0];
-
-      nextClassCard.innerHTML = `<h3>Next Class to Teach</h3><p><strong>${teacherCourses[1].title}</strong>: ${nextClassInfo.title}</p><p>Time: ${nextClassInfo.date}, ${nextClassInfo.time}</p><button class="btn btn-info" style="margin-top:1rem;">Start Class</button>`;
-      nextClassCard.querySelector('button').addEventListener('click', () => renderLiveClassPage(teacherCourses[1], nextClassInfo));
-
-      const coursesGrid = document.getElementById("teacher-courses-grid");
-      coursesGrid.innerHTML = "";
-      teacherCourses.forEach(c => {
-        const courseCard = document.createElement('div');
-        courseCard.className = 'card course-card';
-        courseCard.innerHTML = `<h4>${c.title}</h4><p style="color:var(--secondary-color);">${c.students} students enrolled</p>`;
-        courseCard.addEventListener('click', () => renderTeacherCourseDetailPage(c));
-        coursesGrid.appendChild(courseCard);
-      });
-    }
     
-    function renderLiveClassPage(course, session) {
-        document.getElementById('live-class-title').textContent = course.title;
-        document.getElementById('live-class-topic').textContent = `Instructor's Screen Share: ${session.topic || session.title}`;
-        showPage('live-class-page');
-        document.getElementById('bandwidth-selector').value = 'full';
-        document.getElementById('bandwidth-status').textContent = 'Mode: Full Experience';
-        document.querySelector('#live-class-page .main-pane').style.opacity = 1;
-    }
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // --- STATE & DATA ---
+        let currentUserRole = null;
+        let activePoll = null;
+        const student = { name: 'Priya Sharma' };
+        const studentCourses = [
+            { id: 101, title: "Introduction to Web Development", instructor: "Mr. Raj Singh" },
+            { id: 102, title: "Data Structures in Python", instructor: "Dr. Anjali Verma" }
+        ];
+        const teacher = { name: 'Mr. Raj Singh' };
+        const teacherCourses = [
+            { id: 101, title: "Introduction to Web Development", students: 35 },
+            { id: 201, title: "Advanced CSS", students: 20 }
+        ];
+        const allSessions = {
+            101: [{ topic: "Class 1: HTML Basics", date: "2025-09-29T14:00:00" }, { topic: "Class 2: CSS Fundamentals", date: "2025-10-01T14:00:00" }],
+            102: [{ topic: "Review: Lists and Tuples", date: "2025-09-26T11:00:00" }],
+            201: [{ topic: "Deep Dive into Flexbox", date: "2025-09-30T16:00:00" }]
+        };
+        const allQuizzes = {
+             101: [
+                { title: "Quiz 1: HTML Structure", due: "2025-10-05T23:59:00", status: "Not Started" },
+                { title: "Quiz 2: CSS Selectors", due: "2025-10-12T23:59:00", status: "Not Started" }
+            ],
+            102: [ { title: "Quiz 1: Python Lists", due: "2025-10-03T23:59:00", status: "Completed" } ],
+            201: [] 
+        };
 
-    function renderStudentCourseDetailPage(course) {
-        document.getElementById('s-breadcrumb-course-title').textContent = course.title;
-        document.getElementById('s-course-detail-title').textContent = course.title;
-        document.getElementById('s-course-detail-instructor').textContent = `Instructor: ${course.instructor}`;
-        
-        const sessionsContent = document.getElementById('s-sessions-content');
-        sessionsContent.innerHTML = ''; 
-        course.sessions.forEach(session => {
-            const item = document.createElement('div');
-            item.className = 'list-item';
-            item.innerHTML = `<div><h4>${session.title}</h4><p>${session.date}, ${session.time}</p></div><button class="btn btn-success">Join Live</button>`;
-            item.querySelector('button').addEventListener('click', () => renderLiveClassPage(course, session));
-            sessionsContent.appendChild(item);
-        });
-
-        setupTabs(document.querySelector('#student-course-detail-page'));
-        showPage('student-course-detail-page');
-    }
-
-    function renderTeacherCourseDetailPage(course) {
-        document.getElementById('t-breadcrumb-course-title').textContent = course.title;
-        document.getElementById('t-course-detail-title').textContent = course.title;
-        
-        const sessionsContent = document.getElementById('t-sessions-content');
-        sessionsContent.innerHTML = '';
-        course.sessions.forEach(session => {
-            const item = document.createElement('div');
-            item.className = 'list-item';
-            item.innerHTML = `<div><h4>${session.title}</h4><p>${session.date}, ${session.time}</p></div><button class="btn btn-info">Start Class</button>`;
-            item.querySelector('button').addEventListener('click', () => renderLiveClassPage(course, session));
-            sessionsContent.appendChild(item);
-        });
-
-        const studentsContent = document.getElementById('t-students-content');
-        studentsContent.innerHTML = '';
-        course.enrolledStudents.forEach(student => {
-            const item = document.createElement('div');
-            item.className = 'list-item';
-            item.innerHTML = `<div><h4>${student.name}</h4></div><button class="btn btn-secondary">View Progress</button>`;
-            studentsContent.appendChild(item);
-        });
-        
-        setupTabs(document.querySelector('#teacher-course-detail-page'));
-        showPage('teacher-course-detail-page');
-    }
-
-    function setupTabs(pageElement) {
-        const tabs = pageElement.querySelectorAll('.course-tab');
-        const contents = pageElement.querySelectorAll('.content-list');
-        tabs.forEach(tab => {
-            tab.onclick = () => {
-                tabs.forEach(t => t.classList.remove('active'));
-                tab.classList.add('active');
-                const contentId = tab.dataset.tabFor;
-                contents.forEach(content => { content.style.display = content.id === contentId ? 'block' : 'none'; });
-            };
-        });
-        tabs[0].click();
-    }
-
-    // ===============================
-    // LIVE CLASS PAGE CONTROLS
-    // ===============================
-    const bandwidthSelector = document.getElementById('bandwidth-selector');
-    const bandwidthStatus = document.getElementById('bandwidth-status');
-    const mainPane = document.querySelector('#live-class-page .main-pane');
-
-    bandwidthSelector.addEventListener('change', (e) => {
-        const value = e.target.value;
-        let statusText = '';
-        if (value === 'full') { statusText = 'Mode: Full Experience'; mainPane.style.opacity = 1; } 
-        else if (value === 'low') { statusText = 'Mode: Low Bandwidth'; mainPane.style.opacity = 1; } 
-        else if (value === 'audio') { statusText = 'Mode: Audio Only'; mainPane.style.opacity = 0.6; }
-        bandwidthStatus.textContent = statusText;
-    });
-
-    // ===============================
-    // DARK MODE TOGGLE
-    // ===============================
-    const themeToggles = document.querySelectorAll(".theme-toggle-btn");
-
-    function updateThemeUI() {
-        const isDark = document.body.classList.contains("dark");
+        // --- THEME LOGIC ---
+        const body = document.body;
+        const themeToggles = document.querySelectorAll(".theme-toggle");
+        function applyTheme(theme) {
+            const isDark = theme === 'dark';
+            body.classList.toggle('dark-mode', isDark);
+            themeToggles.forEach(btn => {
+                btn.innerHTML = isDark ? `<svg><use href="#icon-sun"></use></svg>` : `<svg><use href="#icon-moon"></use></svg>`;
+            });
+        }
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        applyTheme(savedTheme);
         themeToggles.forEach(btn => {
-            if (btn.closest('.login-box')) { // Login page button
-                btn.innerHTML = isDark ? '☀️ Light Mode' : '🌙 Dark Mode';
-                btn.setAttribute('title', isDark ? 'Switch to Light Mode' : 'Switch to Dark Mode');
-            } else { // Header buttons
-                btn.innerHTML = isDark ? '☀️ Light' : '🌙 Dark';
-                btn.setAttribute('title', isDark ? 'Switch to Light Mode' : 'Switch to Dark Mode');
+            btn.addEventListener("click", () => {
+                const currentTheme = body.classList.contains('dark-mode') ? 'light' : 'dark';
+                localStorage.setItem('theme', currentTheme);
+                applyTheme(currentTheme);
+            });
+        });
+
+        // --- LANGUAGE LOGIC ---
+        const langSwitchers = document.querySelectorAll('.language-selection a');
+        langSwitchers.forEach(link => {
+            link.addEventListener('click', (e) => {
+                const lang = e.target.getAttribute('data-lang');
+                langSwitchers.forEach(s => s.classList.remove('lang-active'));
+                document.querySelectorAll(`.language-selection a[data-lang="${lang}"]`).forEach(s => s.classList.add('lang-active'));
+            });
+        });
+        
+        // --- PAGE NAVIGATION ---
+        const pages = document.querySelectorAll('.page');
+        function showPage(pageId) {
+            pages.forEach(page => page.classList.toggle('active', page.id === pageId));
+        }
+
+        function setupLiveClassView(courseTitle) {
+            document.getElementById('live-class-title').textContent = courseTitle;
+            const pollControls = document.getElementById('teacher-poll-controls');
+            if(currentUserRole === 'teacher') {
+                pollControls.style.display = 'block';
+                if(activePoll) {
+                    renderPollResults();
+                    document.getElementById('poll-creation-area').style.display = 'none';
+                    document.getElementById('poll-management-area').style.display = 'block';
+                } else {
+                    resetPollView();
+                }
+            } else {
+                pollControls.style.display = 'none';
+                if (activePoll) {
+                    renderPollForStudent();
+                }
+            }
+            showPage('live-class-page');
+        }
+
+        // --- RENDER FUNCTIONS ---
+        function renderStudentDashboard() {
+            document.getElementById('student-name').textContent = student.name;
+            const upNextCard = document.getElementById('student-up-next-card');
+            upNextCard.innerHTML = `<h3>Up Next: Live Class</h3><p><strong>Intro to Web Dev</strong>: CSS Fundamentals</p><p>Time: 1 Oct 2025, 2:00 PM</p><button class="btn btn-success" style="margin-top: 1rem;">Join Now</button>`;
+            upNextCard.querySelector('button').addEventListener('click', () => setupLiveClassView('Intro to Web Dev'));
+            
+            const aiHelperCard = document.getElementById('ai-study-helper-card');
+            aiHelperCard.innerHTML = `<h3>✨ AI Study Helper</h3><p style="color: var(--text-secondary); margin-bottom: 1rem;">Stuck on a concept? Ask our AI assistant.</p><button id="ask-ai-student-btn" class="btn btn-primary">Ask AI</button>`;
+            
+            const coursesGrid = document.getElementById('student-courses-grid');
+            coursesGrid.innerHTML = '';
+            studentCourses.forEach(course => {
+                coursesGrid.innerHTML += `<div class="card course-card" data-course-id="${course.id}"><h4>${course.title}</h4><p style="color: var(--text-secondary);">${course.instructor}</p></div>`;
+            });
+        }
+
+        function renderTeacherDashboard() {
+            document.getElementById('teacher-name').textContent = teacher.name;
+            const nextClassCard = document.getElementById('teacher-next-class-card');
+            nextClassCard.innerHTML = `<h3>Next Class to Teach</h3><p><strong>Advanced CSS</strong></p><p>Time: 30 Sep 2025, 4:00 PM</p><button class="btn btn-info" style="margin-top: 1rem;">Start Class</button>`;
+            nextClassCard.querySelector('button').addEventListener('click', () => setupLiveClassView('Advanced CSS'));
+            
+            const coursesGrid = document.getElementById('teacher-courses-grid');
+            coursesGrid.innerHTML = '';
+            teacherCourses.forEach(course => {
+                coursesGrid.innerHTML += `<div class="card course-card" data-course-id="${course.id}"><h4>${course.title}</h4><p style="color: var(--text-secondary);">${course.students} students</p></div>`;
+            });
+        }
+
+        function renderCoursePage(courseId) {
+            const course = [...studentCourses, ...teacherCourses].find(c => String(c.id) === String(courseId));
+            if (!course) return;
+
+            document.querySelectorAll('.user-name-placeholder').forEach(el => el.textContent = currentUserRole === 'student' ? student.name : teacher.name);
+            document.getElementById('course-breadcrumb-name').textContent = course.title;
+            document.getElementById('course-title').textContent = course.title;
+            document.getElementById('course-instructor').textContent = `Instructor: ${course.instructor || teacher.name}`;
+            
+            const tabsContainer = document.querySelector('#course-page .tabs');
+            tabsContainer.innerHTML = `<button class="tab-button active" data-tab="sessions-content">Sessions & Materials</button><button class="tab-button" data-tab="quizzes-content">Quizzes & Assignments</button>`;
+            
+            const sessionsContent = document.getElementById('sessions-content');
+            sessionsContent.innerHTML = '<h3>Sessions</h3>';
+            (allSessions[courseId] || []).forEach(session => {
+                const isPast = new Date(session.date) < new Date();
+                const sessionItem = document.createElement('div');
+                sessionItem.className = 'card session-item';
+                sessionItem.innerHTML = `
+                    <div><strong>${session.topic}</strong><br><small>${new Date(session.date).toLocaleString()}</small></div>
+                    <div class="actions">${isPast ? `<button class="btn btn-secondary">Download</button>` : `<button class="btn btn-success">Join Live</button>`}</div>`;
+                sessionItem.querySelector('button').addEventListener('click', () => setupLiveClassView(course.title));
+                sessionsContent.appendChild(sessionItem);
+            });
+
+            const quizzesContent = document.getElementById('quizzes-content');
+            quizzesContent.innerHTML = '<h3>Quizzes</h3>';
+            (allQuizzes[courseId] || []).forEach(quiz => {
+                 quizzesContent.innerHTML += `<div class="card"><h4>${quiz.title}</h4><p>Due: ${new Date(quiz.due).toLocaleString()}</p><p>Status: ${quiz.status}</p></div>`;
+            });
+
+            document.querySelectorAll('#course-page .tab-content, #course-page .tab-button').forEach(el => el.classList.remove('active'));
+            document.querySelector('.tab-button[data-tab="sessions-content"]').classList.add('active');
+            document.querySelector('#sessions-content').classList.add('active');
+            showPage('course-page');
+        }
+
+        // --- AI MODAL LOGIC ---
+        const aiModal = document.getElementById('ai-assistant-modal');
+        function showAiModal(title, bodyContent) {
+            aiModal.querySelector('#ai-modal-title').textContent = title;
+            aiModal.querySelector('#ai-modal-body').innerHTML = bodyContent;
+            aiModal.querySelector('#ai-modal-result').innerHTML = '';
+            aiModal.classList.add('visible');
+        }
+        function hideAiModal() { aiModal.classList.remove('visible'); }
+        document.getElementById('close-ai-modal-btn').addEventListener('click', hideAiModal);
+
+        function handleStudentAskAi() {
+            const body = `<form id="student-ai-form"><div class="form-group"><label for="ai-concept">What concept do you need help with?</label><textarea id="ai-concept" rows="3" required></textarea></div><button type="submit" class="btn btn-primary">Explain</button></form>`;
+            showAiModal('AI Study Helper', body);
+            document.getElementById('student-ai-form').addEventListener('submit', (e) => {
+                e.preventDefault();
+                document.getElementById('ai-modal-result').innerHTML = `<p><strong>Explanation:</strong> This is where the AI's explanation would appear. (This is a demo)</p>`;
+            });
+        }
+        
+        // --- POLL LOGIC ---
+        function handlePollLaunch(e) {
+            e.preventDefault();
+            const question = document.getElementById('poll-q').value.trim();
+            const optionInputs = document.querySelectorAll('.poll-option-input');
+            const options = Array.from(optionInputs).map(input => ({ text: input.value.trim(), votes: 0 })).filter(opt => opt.text !== '');
+
+            if (question && options.length >= 2) {
+                activePoll = { question, options };
+                renderPollResults();
+                document.getElementById('poll-creation-area').style.display = 'none';
+                document.getElementById('poll-management-area').style.display = 'block';
+            } else {
+                alert('Please provide a question and at least two options.');
+            }
+        }
+
+        function renderPollCreationForm() {
+            const area = document.getElementById('poll-management-area');
+            area.innerHTML = `
+                <form id="poll-create-form">
+                    <div class="form-group"><label for="poll-q">Question</label><input type="text" id="poll-q" required></div>
+                    <div class="form-group"><label>Options</label>
+                        <input type="text" class="poll-option-input" placeholder="Option 1" required>
+                        <input type="text" class="poll-option-input" placeholder="Option 2" required>
+                        <input type="text" class="poll-option-input" placeholder="Option 3">
+                        <input type="text" class="poll-option-input" placeholder="Option 4">
+                    </div>
+                    <button type="submit" class="btn btn-info" style="width:100%;">Launch Poll</button>
+                </form>`;
+            document.getElementById('poll-create-form').addEventListener('submit', handlePollLaunch);
+        }
+
+        function renderPollResults() {
+            if (!activePoll) return;
+            const area = document.getElementById('poll-management-area');
+            const totalVotes = activePoll.options.reduce((sum, opt) => sum + opt.votes, 0);
+            
+            let resultsHTML = `<p style="font-weight: bold;">${activePoll.question}</p><div style="margin-top:1rem;">`;
+            activePoll.options.forEach(option => {
+                const percentage = totalVotes > 0 ? ((option.votes / totalVotes) * 100).toFixed(0) : 0;
+                resultsHTML += `
+                    <div style="margin-bottom: 0.75rem;">
+                        <label>${option.text} (${option.votes} votes)</label>
+                        <div class="poll-result-bar"><div class="poll-result-fill" style="width: ${percentage}%;">${percentage}%</div></div>
+                    </div>`;
+            });
+            resultsHTML += `</div><button id="end-poll-btn" class="btn btn-secondary" style="width:100%; margin-top:1rem;">End Poll</button>`;
+            area.innerHTML = resultsHTML;
+            document.getElementById('end-poll-btn').addEventListener('click', resetPollView);
+        }
+        
+        function renderPollForStudent() {
+            if (!activePoll) return;
+            const pollModal = document.getElementById('student-poll-modal');
+            pollModal.querySelector('#poll-question-text').textContent = activePoll.question;
+            const optionsContainer = pollModal.querySelector('#poll-options-container');
+            optionsContainer.innerHTML = '';
+            activePoll.options.forEach((option, index) => {
+                optionsContainer.innerHTML += `<div><input type="radio" name="poll-vote" id="option-${index}" value="${index}"><label for="option-${index}" style="margin-left: 0.5rem;">${option.text}</label></div>`;
+            });
+            pollModal.querySelector('#poll-content-wrapper').style.display = 'block';
+            pollModal.querySelector('#poll-confirmation-message').style.display = 'none';
+            pollModal.classList.add('visible');
+        }
+
+        function handlePollVote(e) {
+            e.preventDefault();
+            const selectedOption = document.querySelector('input[name="poll-vote"]:checked');
+            if (selectedOption) {
+                activePoll.options[selectedOption.value].votes++;
+                const pollModal = document.getElementById('student-poll-modal');
+                pollModal.querySelector('#poll-content-wrapper').style.display = 'none';
+                pollModal.querySelector('#poll-confirmation-message').style.display = 'block';
+                setTimeout(() => pollModal.classList.remove('visible'), 1500);
+                renderPollResults();
+            } else {
+                document.getElementById('poll-error-message').style.display = 'block';
+            }
+        }
+
+        function resetPollView() {
+            activePoll = null;
+            document.getElementById('poll-creation-area').style.display = 'block';
+            document.getElementById('poll-management-area').style.display = 'none';
+        }
+        
+        // --- EVENT LISTENERS ---
+        document.getElementById('show-student-login').addEventListener('click', () => {
+            currentUserRole = 'student';
+            document.querySelector('#login-form .btn').className = 'btn btn-primary';
+            document.getElementById('login-role-title').textContent = 'Student Login';
+            showPage('login-page');
+        });
+        document.getElementById('show-teacher-login').addEventListener('click', () => {
+            currentUserRole = 'teacher';
+            document.querySelector('#login-form .btn').className = 'btn btn-info';
+            document.getElementById('login-role-title').textContent = 'Teacher Login';
+            showPage('login-page');
+        });
+        document.getElementById('back-to-landing').addEventListener('click', () => showPage('landing-page'));
+        document.getElementById('login-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            if (currentUserRole === 'student') {
+                renderStudentDashboard();
+                showPage('student-dashboard-page');
+            } else if (currentUserRole === 'teacher') {
+                renderTeacherDashboard();
+                showPage('teacher-dashboard-page');
             }
         });
-    }
-
-    themeToggles.forEach(btn => {
-        btn.addEventListener("click", () => {
-            document.body.classList.toggle("dark");
-            updateThemeUI();
+        document.getElementById('bandwidth-selector').addEventListener('change', (e) => {
+            const statusEl = document.getElementById('bandwidth-status');
+            const videoEl = document.getElementById('video-content');
+            statusEl.textContent = `Mode: ${e.target.options[e.target.selectedIndex].text}`;
+            videoEl.style.opacity = (e.target.value === 'audio') ? 0.1 : 1;
         });
-    });
+        document.getElementById('create-poll-btn').addEventListener('click', () => {
+             renderPollCreationForm();
+             document.getElementById('poll-creation-area').style.display = 'none';
+             document.getElementById('poll-management-area').style.display = 'block';
+        });
+        document.getElementById('poll-vote-form').addEventListener('submit', handlePollVote);
+        
+        document.body.addEventListener('click', (e) => {
+            if (e.target.closest('.logout-btn')) { showPage('landing-page'); }
+            if (e.target.closest('.back-to-dashboard-link')) { showPage(currentUserRole === 'student' ? 'student-dashboard-page' : 'teacher-dashboard-page'); }
+            if (e.target.closest('.course-card')) { renderCoursePage(e.target.closest('.course-card').dataset.courseId); }
+            if (e.target.closest('#ask-ai-student-btn')) { handleStudentAskAi(); }
+            if (e.target.matches('.tab-button')) {
+                const button = e.target;
+                button.parentElement.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+                const contentId = button.dataset.tab;
+                button.closest('main').querySelectorAll('.tab-content').forEach(content => {
+                    content.classList.toggle('active', content.id === contentId);
+                });
+            }
+        });
 
-    updateThemeUI(); // Set initial button text on load
-  </script>
+        // --- INITIALIZATION ---
+        showPage('landing-page');
+    });
+    </script>
 </body>
 </html>
